@@ -1,5 +1,6 @@
 CREATE TABLE tb_users (
     user_uuid uuid DEFAULT random_uuid() PRIMARY KEY,
+    --id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(50) NOT NULL,
