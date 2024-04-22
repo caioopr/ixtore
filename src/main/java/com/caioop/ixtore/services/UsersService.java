@@ -6,6 +6,8 @@ import com.caioop.ixtore.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UsersService {
 
@@ -17,13 +19,12 @@ public class UsersService {
     }
 
     public UserEntity create(UserDTO userDTO){
-        UserEntity user = new UserEntity();
-        user.setName(userDTO.name());
-        user.setEmail(userDTO.email());
-        user.setPassword(userDTO.password());
-        user.setRole(userDTO.role());
 
+        if(usersRepository.existsByEmail(userDTO.email())){
+            throw new RuntimeException("User already exits");
+        }
 
+        UserEntity user = new UserEntity(userDTO);
         return usersRepository.save(user);
     }
 }
