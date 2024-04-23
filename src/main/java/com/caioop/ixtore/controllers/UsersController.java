@@ -4,11 +4,14 @@ package com.caioop.ixtore.controllers;
 
 import com.caioop.ixtore.dtos.UserDTO;
 
+import com.caioop.ixtore.dtos.UserRegisterDTO;
 import com.caioop.ixtore.entities.UserEntity;
 import com.caioop.ixtore.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -23,8 +26,14 @@ public class UsersController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserEntity create(@RequestBody UserDTO user ){
-        return usersService.create(user);
+    public UserEntity register(@RequestBody UserRegisterDTO user ){
+        return usersService.register(user);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserDTO> getAll(){
+        return usersService.getAll();
     }
 
 }

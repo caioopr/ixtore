@@ -1,6 +1,7 @@
 package com.caioop.ixtore.entities;
 
-import com.caioop.ixtore.dtos.UserDTO;
+
+import com.caioop.ixtore.dtos.UserRegisterDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,8 +18,8 @@ import java.util.UUID;
 @Table(name = "tb_users")
 public class UserEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID user_uuid;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String user_uuid;
 
     @Column(name = "name", length = 50, nullable = false)
     private String name;
@@ -36,7 +37,7 @@ public class UserEntity implements Serializable {
     @Generated
     private Timestamp created_at;
 
-    public UserEntity(UserDTO userDTO){
+    public UserEntity(UserRegisterDTO userDTO){
         this.name = userDTO.name();
         this.email = userDTO.email();
         this.password = userDTO.password();

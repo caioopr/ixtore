@@ -1,4 +1,6 @@
 package com.caioop.ixtore.dtos;
 
-public record UserDTO(String name, String email, String password, String role) {
+import java.util.UUID;
+
+public record UserDTO(UUID user_uuid, String name, String email, String role) {
 }
