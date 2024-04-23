@@ -19,7 +19,7 @@ import java.util.UUID;
 public class UserEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String user_uuid;
+    private UUID user_uuid;
 
     @Column(name = "name", length = 50, nullable = false)
     private String name;

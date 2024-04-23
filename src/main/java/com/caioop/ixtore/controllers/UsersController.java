@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -30,10 +31,18 @@ public class UsersController {
         return usersService.register(user);
     }
 
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDTO get(@PathVariable("id") UUID id){
+        return usersService.get(id);
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> getAll(){
         return usersService.getAll();
     }
+
+
 
 }

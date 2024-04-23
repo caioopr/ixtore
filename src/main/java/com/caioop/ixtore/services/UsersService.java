@@ -41,8 +41,14 @@ public class UsersService {
         )).toList();
     }
 
-    public void get(UUID userId){
-        return;
+    public UserDTO get(UUID userId){
+        UserEntity user = usersRepository.findById(userId).orElseThrow( () -> new RuntimeException("User not found."));
+        return new UserDTO(
+                user.getUser_uuid(),
+                user.getName(),
+                user.getEmail(),
+                user.getRole()
+                );
     }
 
     public void update(UUID userId){
