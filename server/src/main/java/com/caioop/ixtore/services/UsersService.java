@@ -1,7 +1,9 @@
 package com.caioop.ixtore.services;
 
+import com.caioop.ixtore.daos.UserDAO;
 import com.caioop.ixtore.dtos.UserDTO;
 import com.caioop.ixtore.dtos.UserRegisterDTO;
+import com.caioop.ixtore.dtos.UserUpdateDTO;
 import com.caioop.ixtore.entities.UserEntity;
 import com.caioop.ixtore.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,14 +53,23 @@ public class UsersService {
                 );
     }
 
-    public void update(UUID userId){
-        return;
+    public UserDTO update(UUID userId, UserUpdateDTO updatedUser){
+        return usersRepository.findById(userId).map(
+                user -> {
+                    user.setName(updatedUser.name());
+                    user.setEmail(updatedUser.email());
+                    user.setRole(updatedUser.role());
+                    usersRepository.save(user);
+                    return new UserDTO(userId, updatedUser.name(), updatedUser.email(), updatedUser.role());
+                }
+        ).orElseThrow( () -> new RuntimeException(""));
     }
 
     public void delete(UUID userId){
         return;
     }
 
+    // aux
     private UUID convertBytesToUUID(byte[] bytes) {
         ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
         long high = byteBuffer.getLong();

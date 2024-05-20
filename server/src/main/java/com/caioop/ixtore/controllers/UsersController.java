@@ -5,6 +5,7 @@ package com.caioop.ixtore.controllers;
 import com.caioop.ixtore.dtos.UserDTO;
 
 import com.caioop.ixtore.dtos.UserRegisterDTO;
+import com.caioop.ixtore.dtos.UserUpdateDTO;
 import com.caioop.ixtore.entities.UserEntity;
 import com.caioop.ixtore.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,12 @@ public class UsersController {
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> getAll(){
         return usersService.getAll();
+    }
+
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDTO update(@PathVariable("id") UUID id, @RequestBody UserUpdateDTO updatedUser){
+        return usersService.update(id,updatedUser);
     }
 
 
