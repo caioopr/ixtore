@@ -3,7 +3,7 @@ package com.caioop.ixtore.daos;
 import java.util.UUID;
 
 public interface UserDAO {
-    byte[] getUuid();
+    UUID getUuid();
     String getName();
     String getEmail();
     String getRole();

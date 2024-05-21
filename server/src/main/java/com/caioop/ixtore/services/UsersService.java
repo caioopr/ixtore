@@ -36,7 +36,7 @@ public class UsersService {
 
     public List<UserDTO> getAll(){
         return usersRepository.findAllUsers().stream().map( userDAO -> new UserDTO(
-                convertBytesToUUID(userDAO.getUuid()),
+                userDAO.getUuid(),
                 userDAO.getName(),
                 userDAO.getEmail(),
                 userDAO.getRole()
