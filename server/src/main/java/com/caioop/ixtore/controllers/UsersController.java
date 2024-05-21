@@ -50,6 +50,10 @@ public class UsersController {
         return usersService.update(id,updatedUser);
     }
 
-
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable UUID id){
+        usersService.delete(id);
+    }
 
 }

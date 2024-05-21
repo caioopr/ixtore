@@ -62,19 +62,18 @@ public class UsersService {
                     usersRepository.save(user);
                     return new UserDTO(userId, updatedUser.name(), updatedUser.email(), updatedUser.role());
                 }
-        ).orElseThrow( () -> new RuntimeException(""));
+        ).orElseThrow( () -> new RuntimeException("User not found."));
     }
 
     public void delete(UUID userId){
-        return;
+
+        usersRepository.findById(userId).map(
+                user -> {
+                    usersRepository.delete(user);
+                    return Void.TYPE;
+                }
+        ).orElseThrow(() -> new RuntimeException("User not found."));
     }
 
-    // aux
-    private UUID convertBytesToUUID(byte[] bytes) {
-        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
-        long high = byteBuffer.getLong();
-        long low = byteBuffer.getLong();
-        return new UUID(high, low);
-    }
 
 }
