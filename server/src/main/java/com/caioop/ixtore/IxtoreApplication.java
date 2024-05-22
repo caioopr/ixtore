@@ -8,5 +8,4 @@ public class IxtoreApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(IxtoreApplication.class, args);
 	}
-
 }
