@@ -1,5 +1,6 @@
 package com.caioop.ixtore.entities;
 
+import com.caioop.ixtore.dtos.ProductRegisterDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,8 +18,11 @@ import java.util.UUID;
 @Table(name = "tb_products")
 public class ProductEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer product_id;
+
+    @Column(name = "code")
+    private String code;
 
     @Column(name = "name")
     private String name;
@@ -41,4 +45,14 @@ public class ProductEntity {
     @Column(name = "created_at")
     @Generated
     private Timestamp created_at;
+
+    public ProductEntity(ProductRegisterDTO productDTO){
+        this.code = productDTO.code();
+        this.name = productDTO.name();
+        this.price = productDTO.price();
+        this.description = productDTO.description();
+        this.weight = productDTO.weight();
+        this.fk_user_uuid = productDTO.fk_user_uuid();
+        this.supplier = productDTO.supplier();
+    }
 }

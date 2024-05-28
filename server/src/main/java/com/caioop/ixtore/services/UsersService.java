@@ -24,10 +24,11 @@ public class UsersService {
         this.usersRepository = usersRepository;
     }
 
+    // TODO : change return type
     public UserEntity register(UserRegisterDTO userDTO){
 
         if(usersRepository.existsByEmail(userDTO.email())){
-            throw new RuntimeException("User already exits");
+            throw new RuntimeException("User already exist");
         }
 
         UserEntity user = new UserEntity(userDTO);
