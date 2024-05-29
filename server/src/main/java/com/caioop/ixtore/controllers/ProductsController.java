@@ -29,9 +29,15 @@ public class ProductsController {
         return productsService.register(product);
     }
 
-    @GetMapping("{id}")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ProductEntity> getProductsByUser(@PathVariable("id") UUID id){
-        return productsService.getProductsByUserId(id);
+    public List<ProductEntity> getProductsByUser(@RequestParam(value="user_id") String id){
+        return productsService.getProductsByUserId(UUID.fromString(id));
+    }
+
+    @GetMapping("{code}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProductEntity getProductsByCode(@PathVariable("code") String code){
+        return productsService.getByCode(code);
     }
 }

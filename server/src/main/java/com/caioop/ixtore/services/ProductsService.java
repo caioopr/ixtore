@@ -34,7 +34,9 @@ public class ProductsService {
     public List<ProductEntity> getProductsByUserId(UUID userId){
         return productsRepository.findProdutctsByUserUUID(userId);
     }
-    public void get(){}
+    public ProductEntity getByCode(String code){
+        return productsRepository.findByCode(code);
+    }
     public void update(){}
     public void delete(){}
 

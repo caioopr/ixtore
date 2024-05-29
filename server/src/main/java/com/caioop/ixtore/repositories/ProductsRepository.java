@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public interface ProductsRepository extends JpaRepository<ProductEntity,Integer> {
     boolean existsByCode(String code);
+    ProductEntity findByCode(String code);
 
     @Query(nativeQuery = true, value = " SELECT * FROM tb_products as p WHERE p.fk_user_uuid =:userId ")
     List<ProductEntity> findProdutctsByUserUUID(UUID userId);
