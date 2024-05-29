@@ -6,6 +6,9 @@ import com.caioop.ixtore.repositories.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 public class ProductsService {
 
@@ -28,7 +31,9 @@ public class ProductsService {
 
     }
 
-    public void getAll(){}
+    public List<ProductEntity> getProductsByUserId(UUID userId){
+        return productsRepository.findProdutctsByUserUUID(userId);
+    }
     public void get(){}
     public void update(){}
     public void delete(){}

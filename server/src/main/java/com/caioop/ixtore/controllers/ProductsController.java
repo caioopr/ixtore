@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/products")
 public class ProductsController {
@@ -24,5 +27,11 @@ public class ProductsController {
     @ResponseStatus(HttpStatus.CREATED)
     public ProductEntity register(@RequestBody ProductRegisterDTO product ){
         return productsService.register(product);
+    }
+
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProductEntity> getProductsByUser(@PathVariable("id") UUID id){
+        return productsService.getProductsByUserId(id);
     }
 }
