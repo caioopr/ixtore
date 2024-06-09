@@ -8,11 +8,12 @@ const router = createRouter({
       redirect: '/sales',
     },
     {
-      path: '/login',
+      // TODO: turn /signin and /register into /auth
+      path: '/signin',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/Users/LoginUserView.vue'),
+      component: () => import('../views/Users/SigninUserView.vue'),
     },
     {
       path: '/register',
