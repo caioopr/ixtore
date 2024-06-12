@@ -5,6 +5,7 @@ import com.caioop.ixtore.dtos.UserDTO;
 import com.caioop.ixtore.dtos.UserRegisterDTO;
 import com.caioop.ixtore.dtos.UserUpdateDTO;
 import com.caioop.ixtore.entities.UserEntity;
+import com.caioop.ixtore.entities.UserRole;
 import com.caioop.ixtore.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class UsersService {
                 userDAO.getUuid(),
                 userDAO.getName(),
                 userDAO.getEmail(),
-                userDAO.getRole()
+                UserRole.valueOf(userDAO.getRole())
         )).toList();
     }
 
@@ -50,7 +51,7 @@ public class UsersService {
                 user.getUser_uuid(),
                 user.getName(),
                 user.getEmail(),
-                user.getRole()
+                UserRole.valueOf(user.getRole())
                 );
     }
 
@@ -59,7 +60,7 @@ public class UsersService {
                 user -> {
                     user.setName(updatedUser.name());
                     user.setEmail(updatedUser.email());
-                    user.setRole(updatedUser.role());
+                    user.setRole(updatedUser.role().toString());
                     usersRepository.save(user);
                     return new UserDTO(userId, updatedUser.name(), updatedUser.email(), updatedUser.role());
                 }

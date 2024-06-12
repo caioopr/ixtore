@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+// TODO :
+//  verify if the user_uuid exists
+//  change return type
+//  runtime exceptions
+//  pagination for lists
+
 @Service
 public class ProductsService {
 
@@ -19,7 +25,6 @@ public class ProductsService {
         this.productsRepository = productsRepository;
     }
 
-    // TODO : verify if the user_uuid exists and change return type
     public ProductEntity register(ProductRegisterDTO productDTO){
         if(productsRepository.existsByCode(productDTO.code())){
             throw new RuntimeException("Product already exist.");

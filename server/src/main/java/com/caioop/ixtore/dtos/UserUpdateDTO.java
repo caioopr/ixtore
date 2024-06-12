@@ -1,4 +1,6 @@
 package com.caioop.ixtore.dtos;
 
-public record UserUpdateDTO(String name, String email, String role) {
+import com.caioop.ixtore.entities.UserRole;
+
+public record UserUpdateDTO(String name, String email, UserRole role) {
 }

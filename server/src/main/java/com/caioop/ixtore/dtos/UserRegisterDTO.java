@@ -1,4 +1,6 @@
 package com.caioop.ixtore.dtos;
 
-public record UserRegisterDTO(String name, String email, String password, String role) {
+import com.caioop.ixtore.entities.UserRole;
+
+public record UserRegisterDTO(String name, String email, String password, UserRole role) {
 }
