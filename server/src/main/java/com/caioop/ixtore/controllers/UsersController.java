@@ -26,12 +26,6 @@ public class UsersController {
         this.usersService = usersService;
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserEntity register(@RequestBody UserRegisterDTO user ){
-        return usersService.register(user);
-    }
-
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO get(@PathVariable("id") UUID id){

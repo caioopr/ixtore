@@ -1,6 +1,5 @@
 package com.caioop.ixtore.services;
 
-import com.caioop.ixtore.daos.UserDAO;
 import com.caioop.ixtore.dtos.UserDTO;
 import com.caioop.ixtore.dtos.UserRegisterDTO;
 import com.caioop.ixtore.dtos.UserUpdateDTO;
@@ -10,7 +9,6 @@ import com.caioop.ixtore.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.UUID;
 

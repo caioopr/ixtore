@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 // TODO :
-//  verify if the user_uuid exists
+//  verify if the user id exists
 //  change return type
 //  runtime exceptions
 //  pagination for lists
@@ -42,6 +42,7 @@ public class ProductsService {
     public ProductEntity getByCode(String code){
         return productsRepository.findByCode(code);
     }
+    // TODO: update product and deletion
     public void update(){}
     public void delete(){}
 

@@ -1,4 +1,6 @@
 package com.caioop.ixtore.dtos;
 
-public record LoginResponseDTO(String token) {
+import java.util.UUID;
+
+public record LoginResponseDTO(UserDTO userInfo, String token) {
 }

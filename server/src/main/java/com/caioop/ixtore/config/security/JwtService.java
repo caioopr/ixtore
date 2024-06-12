@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Map;
 
 @Service
 public class JwtService {
@@ -19,7 +20,7 @@ public class JwtService {
 
     public String generateToken(
             UserDetails user,
-            String extraClaims
+            Map<String, Object> extraClaims
     ){
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);

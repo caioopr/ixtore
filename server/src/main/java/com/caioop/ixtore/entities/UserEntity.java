@@ -35,6 +35,7 @@ public class UserEntity implements UserDetails,Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
+    //TODO: @Enumerated(EnumType.STRING) change Type to UserRole
     @Column(name = "role", length = 16)
     private String role;
 

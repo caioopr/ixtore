@@ -3,8 +3,10 @@ package com.caioop.ixtore.controllers;
 import com.caioop.ixtore.config.security.JwtService;
 import com.caioop.ixtore.dtos.AuthenticationDTO;
 import com.caioop.ixtore.dtos.LoginResponseDTO;
+import com.caioop.ixtore.dtos.UserDTO;
 import com.caioop.ixtore.dtos.UserRegisterDTO;
 import com.caioop.ixtore.entities.UserEntity;
+import com.caioop.ixtore.entities.UserRole;
 import com.caioop.ixtore.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("api/auth")
 public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -34,9 +36,18 @@ public class AuthController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        String token = jwtService.generateToken((UserEntity) auth.getPrincipal(), new HashMap<String, String>().put("user_id", ((UserEntity) auth.getPrincipal()).getUser_uuid().toString()));
+        UserEntity user = (UserEntity) auth.getPrincipal();
 
-        return new LoginResponseDTO(token);
+        String token = jwtService.generateToken(user, (Map<String, Object>) new HashMap<>().put("user_id",user.getUser_uuid().toString()));
+
+        return new LoginResponseDTO(
+                new UserDTO(
+                        user.getUser_uuid(),
+                        user.getName(),
+                        user.getEmail(),
+                        UserRole.valueOf(user.getRole())
+                ),
+                token);
     }
 
     @PostMapping("/register")
