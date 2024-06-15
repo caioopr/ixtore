@@ -10,10 +10,8 @@ import com.caioop.ixtore.entities.UserRole;
 import com.caioop.ixtore.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +35,10 @@ public class AuthController {
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
         UserEntity user = (UserEntity) auth.getPrincipal();
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("user_id",user.getUser_uuid().toString());
 
-        String token = jwtService.generateToken(user, (Map<String, Object>) new HashMap<>().put("user_id",user.getUser_uuid().toString()));
+        String token = jwtService.generateToken(user, extraClaims);
 
         return new LoginResponseDTO(
                 new UserDTO(
