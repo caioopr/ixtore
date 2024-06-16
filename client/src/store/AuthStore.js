@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -15,18 +14,22 @@ export const useAuthStore = defineStore('auth', {
   // actions can be async
   actions: {
     async signin(payload) {
-      const response = await fetch('https://localhost:8080/api/users', {
+      console.log(payload);
+      const response = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
-        body: JSON.stringify({
-          email: payload.email,
-          password: payload.password,
-        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ',
+        },
+        referrerPolicy: 'strict-origin-when-cross-origin',
+        body: JSON.stringify(payload),
       });
 
+      console.log(response);
       const responseData = await response.json();
 
       if (!response.ok) {
-        console.log(responseData);
+        console.log(response);
         const error = new Error(
           responseData.message ||
             'Failed to authenticate. Check your login data.'
@@ -34,18 +37,20 @@ export const useAuthStore = defineStore('auth', {
         throw error;
       }
 
-      this.user.id = responseData.user_uuid;
-      this.user.name = responseData.name;
-      this.user.email = responseData.email;
-      this.user.role = responseData.role;
-      //this.token = responseData.token;
+      console.log(responseData);
+      const { userInfo, token } = responseData;
+
+      this.user.id = userInfo.user_uuid;
+      this.user.name = userInfo.name;
+      this.user.email = userInfo.email;
+      this.user.role = userInfo.role;
+      this.token = token;
     },
 
     async register(payload) {
-      const response = await fetch('https://localhost:8080/api/users', {
+      const response = await fetch('http://localhost:8080/api/auth/register', {
         method: 'POST',
         body: JSON.stringify({
-          name: payload.name,
           email: payload.email,
           password: payload.password,
         }),

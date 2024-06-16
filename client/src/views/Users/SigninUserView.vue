@@ -9,6 +9,19 @@ const formIsValid = ref(true);
 const isLoading = ref(false);
 const error = ref(null);
 
+// function teste(){
+//   fetch('http://localhost:8080/api/auth/login', {
+//     method: 'POST',
+//     mode: 'cors',
+//     headers: { 'Accept': 'application/json', "ContentType": 'application/json' },
+//     body: JSON.stringify({
+//       email: email.value,
+//       password: password.value
+//     }),
+//   }).then((response => console.log(response))).catch()
+// }
+
+
 async function submitForm(){
   error.value = null;
   validateForm()
@@ -54,7 +67,7 @@ function validateForm(){
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form @submit.prevent="submitForm" class="space-y-6" action="#" method="POST">
+      <form @submit.prevent="submitForm" class="space-y-6">
         <div>
           <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
           <div class="mt-1.5">
