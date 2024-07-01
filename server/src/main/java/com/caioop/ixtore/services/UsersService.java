@@ -23,15 +23,20 @@ public class UsersService {
         this.usersRepository = usersRepository;
     }
 
-    // TODO : change return type
-    public UserEntity register(UserRegisterDTO userDTO){
+    public void register(UserRegisterDTO userDTO){
 
         if(usersRepository.existsByEmail(userDTO.email())){
             throw new RuntimeException("User already exist");
         }
 
+        UserRole userRole = userDTO.role();
+        if(userRole != UserRole.USER){
+            userRole = UserRole.USER;
+        }
+
         UserEntity user = new UserEntity(userDTO);
-        return usersRepository.save(user);
+        //return usersRepository.save(user);
+        usersRepository.save(user);
     }
 
     public List<UserDTO> getAll(){

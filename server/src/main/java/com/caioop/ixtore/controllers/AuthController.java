@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @RestController
 @RequestMapping("api/auth")
 public class AuthController {
@@ -28,9 +29,11 @@ public class AuthController {
     @Autowired
     private JwtService jwtService;
 
+    @CrossOrigin
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public LoginResponseDTO login(@RequestBody AuthenticationDTO data){
+        System.out.println(data.toString());
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
@@ -55,10 +58,11 @@ public class AuthController {
     public void register(@RequestBody UserRegisterDTO data){
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+
+        //TODO: remove the role arg from RegisterDTO, make define it inside the register function
         UserRegisterDTO newUser = new UserRegisterDTO(data.name(),data.email(), encryptedPassword, data.role());
 
         this.usersService.register(newUser);
-
     }
 
 }

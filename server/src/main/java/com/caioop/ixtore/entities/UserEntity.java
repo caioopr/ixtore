@@ -21,7 +21,8 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "tb_users")
-public class UserEntity implements UserDetails,Serializable {
+public class UserEntity implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID user_uuid;
@@ -43,6 +44,7 @@ public class UserEntity implements UserDetails,Serializable {
     @Generated
     private Timestamp created_at;
 
+    //TODO: add builder
     public UserEntity(UserRegisterDTO userDTO){
         this.name = userDTO.name();
         this.email = userDTO.email();
