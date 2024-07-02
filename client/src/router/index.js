@@ -8,7 +8,9 @@ const router = createRouter({
       redirect: '/sales',
     },
     {
-      // TODO: turn /signin and /register into /auth
+      name: 'signin',
+      // TODO: turn /signin and /register into /auth/signin and /auth/register
+      // TODO: add meta data requiresUnauth
       path: '/signin',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
@@ -16,14 +18,16 @@ const router = createRouter({
       component: () => import('../views/Users/SigninUserView.vue'),
     },
     {
+      name: 'register',
       path: '/register',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/Users/RegisterUserView.vue'),
     },
     {
-      path: '/current_user',
+      name: 'current_user',
+      path: '/current_user', // TODO: add meta data requiresAuth
+      meta: {
+        requiresAuth: true,
+      },
       component: () => import('../views/Users/CurrentUserView.vue'),
     },
     {

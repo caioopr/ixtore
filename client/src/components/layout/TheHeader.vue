@@ -1,13 +1,12 @@
 <script setup>
-import { computed } from 'vue';
 import {useAuthStore} from '@/store/AuthStore';
+import { storeToRefs } from 'pinia';
 
 const authStore = useAuthStore();
 
-const isLoggedIn = computed(() => {
-  return authStore.isAuthenticated;
-})
+const {isAuthenticated} = storeToRefs(authStore)
 
+// TODO: redirect after logout
 
 </script>
 
@@ -18,13 +17,13 @@ const isLoggedIn = computed(() => {
         <router-link to="/signin" >Ixtore</router-link>
       </h1>
       <ul class="list-none w-full md:w-max mt-4 md:m-0 p-0 flex flex-row justify-center items-center">
-        <li v-if="isLoggedIn">
+        <li v-if="isAuthenticated">
             <button @click="authStore.logout">Logout</button>
         </li>
-        <li v-if="!isLoggedIn">
+        <li v-if="!isAuthenticated">
               <router-link to="/signin" class="link">Sign in</router-link>
         </li>
-        <li v-if="!isLoggedIn">
+        <li v-if="!isAuthenticated">
                 <router-link to="/register" class="link">Register</router-link>
           </li>
       </ul>

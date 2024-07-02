@@ -1,20 +1,21 @@
 import { defineStore } from 'pinia';
 
 export const useAuthStore = defineStore('auth', {
-  state: () => ({
-    user: {
-      id: null,
-      name: null,
-      email: null,
-      role: null,
-    },
-    isAuthenticated: false,
-    token: null,
-  }),
+  state: () => {
+    return {
+      user: {
+        id: null,
+        name: null,
+        email: null,
+        role: null,
+      },
+      isAuthenticated: false,
+      token: null,
+    };
+  },
   // actions can be async
   actions: {
     async signin(payload) {
-      console.log(payload);
       const response = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
         headers: {
@@ -25,11 +26,9 @@ export const useAuthStore = defineStore('auth', {
         body: JSON.stringify(payload),
       });
 
-      console.log(response);
       const responseData = await response.json();
 
       if (!response.ok) {
-        console.log(response);
         const error = new Error(
           responseData.message ||
             'Failed to authenticate. Check your login data.'
@@ -37,7 +36,6 @@ export const useAuthStore = defineStore('auth', {
         throw error;
       }
 
-      console.log(responseData);
       const { userInfo, token } = responseData;
 
       this.user.id = userInfo.user_uuid;
@@ -45,16 +43,27 @@ export const useAuthStore = defineStore('auth', {
       this.user.email = userInfo.email;
       this.user.role = userInfo.role;
       this.token = token;
+      this.isAuthenticated = true;
     },
 
     async register(payload) {
       const response = await fetch('http://localhost:8080/api/auth/register', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ',
+        },
         body: JSON.stringify({
+          name: payload.name,
           email: payload.email,
           password: payload.password,
+          role: 'USER',
         }),
       });
+
+      if (!response.ok) {
+        throw new Error('Failed to create account.');
+      }
     },
 
     logout() {

@@ -1,4 +1,5 @@
 <script setup>
+import router from '@/router';
 import { useAuthStore } from '@/store/AuthStore';
 import { ref } from 'vue';
 
@@ -9,19 +10,7 @@ const formIsValid = ref(true);
 const isLoading = ref(false);
 const error = ref(null);
 
-// function teste(){
-//   fetch('http://localhost:8080/api/auth/login', {
-//     method: 'POST',
-//     mode: 'cors',
-//     headers: { 'Accept': 'application/json', "ContentType": 'application/json' },
-//     body: JSON.stringify({
-//       email: email.value,
-//       password: password.value
-//     }),
-//   }).then((response => console.log(response))).catch()
-// }
-
-
+// TODO: make a hook
 async function submitForm(){
   error.value = null;
   validateForm()
@@ -38,6 +27,7 @@ async function submitForm(){
 
   try {
     await authStore.signin(payload);
+    router.replace({ name: 'current_user' });
   } catch(err){
     error.value = err.message || 'Failed to sign in.';
   }
