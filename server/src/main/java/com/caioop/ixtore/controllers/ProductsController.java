@@ -1,9 +1,8 @@
 package com.caioop.ixtore.controllers;
 
 import com.caioop.ixtore.dtos.ProductRegisterDTO;
-import com.caioop.ixtore.dtos.UserRegisterDTO;
+import com.caioop.ixtore.dtos.ProductUpdateDTO;
 import com.caioop.ixtore.entities.ProductEntity;
-import com.caioop.ixtore.entities.UserEntity;
 import com.caioop.ixtore.services.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,5 +38,17 @@ public class ProductsController {
     @ResponseStatus(HttpStatus.OK)
     public ProductEntity getProductsByCode(@PathVariable("code") String code){
         return productsService.getByCode(code);
+    }
+
+    @PutMapping("{code}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProductEntity updateProduct(@PathVariable("code") String code, @RequestBody ProductUpdateDTO product){
+        return productsService.update(code, product);
+    }
+
+    @DeleteMapping("{code}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable("code") String code){
+        productsService.delete(code);
     }
 }
