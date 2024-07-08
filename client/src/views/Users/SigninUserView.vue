@@ -27,7 +27,7 @@ async function submitForm(){
 
   try {
     await authStore.signin(payload);
-    router.replace({ name: 'current_user' });
+    router.replace({ name: 'products' });
   } catch(err){
     error.value = err.message || 'Failed to sign in.';
   }
