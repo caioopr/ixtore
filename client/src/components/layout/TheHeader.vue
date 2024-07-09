@@ -1,4 +1,5 @@
 <script setup>
+import router from '@/router';
 import {useAuthStore} from '@/store/AuthStore';
 import { storeToRefs } from 'pinia';
 
@@ -7,6 +8,10 @@ const authStore = useAuthStore();
 const {isAuthenticated} = storeToRefs(authStore)
 
 // TODO: redirect after logout
+function logout(){
+  authStore.logout()
+  router.replace({ name: 'signin' });
+}
 
 </script>
 
