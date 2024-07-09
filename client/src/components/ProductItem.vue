@@ -1,5 +1,14 @@
 <script setup>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
 const props = defineProps({ code: String, name: String });
+
+const route = useRoute();
+
+const productDetailsLink = computed(()=>{
+    return route.path + '/' + props.code; // /products/09830238402
+})
 
 </script>
 
@@ -10,7 +19,7 @@ const props = defineProps({ code: String, name: String });
           <h2>{{ props.name }}</h2>
         </div>
 
-        <router-link to="/products">Details ></router-link>
+        <router-link :to="productDetailsLink">Details ></router-link>
       <!-- <div>
         <p>Price</p>
         <p>Weight</p>

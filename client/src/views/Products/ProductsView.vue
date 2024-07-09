@@ -25,7 +25,6 @@ async function loadProducts(){
     error.value = err || 'Failed to fetch products';
   }
   isLoading.value = false;
-  console.log("terminouu")
 }
 
 </script>
@@ -41,11 +40,16 @@ async function loadProducts(){
       <button>add +</button>
     </div>
     <section>
-      <product-item code="0000000001" name="test product"></product-item>
+      <div v-if="isLoading === true">
+          Loading...
+      </div>
+      <div v-else-if="products.length > 0">
+        <product-item  v-for="product in products" :code="product.code" :name="product.name"></product-item>
+      </div>
+      <div v-else>
+        <p>No products found. Click in the "add" button to register a new one.</p> 
+      </div>
     </section>
-    <div>
-      {{ products }}
-    </div>
   </div>
 </template>
 
