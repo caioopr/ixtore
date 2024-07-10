@@ -7,6 +7,12 @@ export const useProductsStore = defineStore('products', {
       products: [],
     };
   },
+  getters: {
+    getProductByCode: (state) => {
+      return (productCode) =>
+        state.products.find((product) => product.code === productCode);
+    },
+  },
   actions: {
     async registerProduct(payload) {},
     async fetchProductsList() {

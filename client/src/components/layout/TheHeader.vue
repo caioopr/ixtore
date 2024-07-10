@@ -23,7 +23,7 @@ function logout(){
       </h1>
       <ul class="list-none w-full md:w-max mt-4 md:m-0 p-0 flex flex-row justify-center items-center">
         <li v-if="isAuthenticated">
-            <button @click="authStore.logout">Logout</button>
+            <button @click="logout">Logout</button>
         </li>
         <li v-if="!isAuthenticated">
               <router-link to="/signin" class="link">Sign in</router-link>
