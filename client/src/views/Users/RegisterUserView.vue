@@ -28,7 +28,7 @@ async function submitForm() {
 
   try {
     await authStore.register(payload);
-    router.replace({ name:'signin' })
+    router.replace({ name: 'signin' });
   } catch (err) {
     error.value = err.message || 'Failed to create account';
   }
@@ -61,15 +61,16 @@ function validateForm() {
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
       <form @submit.prevent="submitForm" method="POST" class="space-y-6">
         <div>
-            <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
-            <div class="mt-1.5">
-              <input v-model.trim="username" id="username" name="username" type="text" autocomplete="username" required="true"/>
-            </div>
+          <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
+          <div class="mt-1.5">
+            <input v-model.trim="username" id="username" name="username" type="text" autocomplete="username"
+              required="true" />
           </div>
+        </div>
         <div>
           <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
           <div class="mt-1.5">
-            <input v-model.trim="email" id="email" name="email" type="email" autocomplete="email" required="true"/>
+            <input v-model.trim="email" id="email" name="email" type="email" autocomplete="email" required="true" />
           </div>
         </div>
 
@@ -78,7 +79,8 @@ function validateForm() {
             <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
           </div>
           <div class="mt-1.5">
-            <input v-model.trim="password" id="password" name="password" type="password" autocomplete="current-password" required="true"/>
+            <input v-model.trim="password" id="password" name="password" type="password" autocomplete="current-password"
+              required="true" />
           </div>
         </div>
 
@@ -91,16 +93,15 @@ function validateForm() {
       <p class="mt-6 md:mt-10 text-center text-sm text-gray-500">
         Alredy have an account?
         {{ ' ' }}
-        <router-link to="/signin" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Sign in</router-link>
-        </p>
+        <router-link to="/signin" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Sign
+          in</router-link>
+      </p>
     </div>
   </div>
 </template>
 
 <style scoped>
-
 input {
   @apply block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6
 }
-
 </style>

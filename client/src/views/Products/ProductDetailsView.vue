@@ -19,7 +19,8 @@ import { useRoute } from 'vue-router';
       </div>
 
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <div class="divide-y">
+        <div class="divide-y-4">
+            <!-- TODO: turn this into a info component -->
             <div>
                 <p class="title">Code</p>
                 <p>{{ product.code }}</p>
@@ -54,3 +55,15 @@ import { useRoute } from 'vue-router';
   </div>
   </section>
 </template>
+
+<style scoped>
+  a, button {
+    @apply flex w-full justify-center rounded-md bg-indigo-600 my-1.5 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600
+  }
+  button {
+    @apply bg-red-600 hover:bg-red-500
+  }
+  .title {
+    color: rgb(156 163 175);
+  }
+</style>
