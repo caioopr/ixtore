@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 
 const isRegisterFormOpen = ref(false);
+const formIsValid = ref(true);
 const isLoading = ref(false);
 const error = ref(null);
 
@@ -24,6 +25,35 @@ function registerForm() {
   isRegisterFormOpen.value = !(isRegisterFormOpen.value);
 }
 
+async function submitForm() {
+  error.value = null;
+  validateForm();
+
+  if (!formIsValid) {
+    return;
+  }
+
+  isLoading.value = true
+
+  const payload = {
+    code: code.value,
+    name: name.value,
+    price: price.value,
+    description: description.value,
+    weight: weight.value,
+    fk_user_uuid: "",
+    supplier: supplier.value
+  }
+
+  try {
+    await productsStore.registerProduct(payload);
+  } catch (err) {
+    error.value = err.message || 'Failed to register product';
+  }
+
+  isLoading.value = false
+}
+
 async function loadProducts() {
 
   error.value = null;
@@ -35,6 +65,16 @@ async function loadProducts() {
     error.value = err || 'Failed to fetch products';
   }
   isLoading.value = false;
+}
+
+function validateForm() {
+  formIsValid.value = true;
+  if (
+    code.value === '' || name.value === '' || supplier.value === ''
+  ) {
+    formIsValid.value = false;
+    return;
+  }
 }
 
 </script>
@@ -52,7 +92,7 @@ async function loadProducts() {
     <section v-if="isRegisterFormOpen">
       <div>
         <form @submit.prevent="submitForm" method="POST" class="space-y-6">
-          <div class="grid grid-cols-2">
+          <div class="grid sm:grid-cols-1 md:grid-cols-2">
             <div>
               <label for="code" class="block text-sm font-medium leading-6 text-gray-900">Code *</label>
               <div class="mt-1.5">
@@ -66,9 +106,9 @@ async function loadProducts() {
               </div>
             </div>
             <div>
-              <label for="price" class="block text-sm font-medium leading-6 text-gray-900">Price *</label>
+              <label for="price" class="block text-sm font-medium leading-6 text-gray-900">Price</label>
               <div class="mt-1.5">
-                <input v-model.trim="price" id="price" name="price" type="number" required="true" />
+                <input v-model.trim="price" id="price" name="price" type="number" required="false" />
               </div>
             </div>
             <div>
@@ -92,12 +132,11 @@ async function loadProducts() {
           </div>
 
           <button type="submit"
-            class="flex w-2/5 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Confirm</button>
-
+            class="flex w-1/4 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Confirm</button>
         </form>
       </div>
     </section>
-    <section>
+    <section class="mt-5">
       <div v-if="isLoading === true">
         Loading...
       </div>
@@ -115,5 +154,9 @@ async function loadProducts() {
 input {
   border: none;
   border-bottom: 2px solid blue;
+}
+
+input {
+  @apply w-full md:w-4/5
 }
 </style>
