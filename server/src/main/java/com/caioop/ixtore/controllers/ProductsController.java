@@ -3,6 +3,8 @@ package com.caioop.ixtore.controllers;
 import com.caioop.ixtore.dtos.ProductRegisterDTO;
 import com.caioop.ixtore.dtos.ProductUpdateDTO;
 import com.caioop.ixtore.entities.ProductEntity;
+import com.caioop.ixtore.exceptions.DuplicatedRegistrationException;
+import com.caioop.ixtore.exceptions.ProductNotFoundException;
 import com.caioop.ixtore.services.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +26,7 @@ public class ProductsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductEntity register(@RequestBody ProductRegisterDTO product ){
+    public ProductEntity register(@RequestBody ProductRegisterDTO product ) throws DuplicatedRegistrationException {
         return productsService.register(product);
     }
 
@@ -42,7 +44,7 @@ public class ProductsController {
 
     @PutMapping("{code}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductEntity updateProduct(@PathVariable("code") String code, @RequestBody ProductUpdateDTO product){
+    public ProductEntity updateProduct(@PathVariable("code") String code, @RequestBody ProductUpdateDTO product) throws ProductNotFoundException {
         return productsService.update(code, product);
     }
 

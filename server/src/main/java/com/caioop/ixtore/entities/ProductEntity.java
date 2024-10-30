@@ -17,6 +17,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "tb_products")
 public class ProductEntity {
+    //TODO: add dimension attribute and a categories Table? Attribute?
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer product_id;

@@ -3,6 +3,8 @@ package com.caioop.ixtore.services;
 import com.caioop.ixtore.dtos.ProductRegisterDTO;
 import com.caioop.ixtore.dtos.ProductUpdateDTO;
 import com.caioop.ixtore.entities.ProductEntity;
+import com.caioop.ixtore.exceptions.DuplicatedRegistrationException;
+import com.caioop.ixtore.exceptions.ProductNotFoundException;
 import com.caioop.ixtore.repositories.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,11 +28,12 @@ public class ProductsService {
         this.productsRepository = productsRepository;
     }
 
-    public ProductEntity register(ProductRegisterDTO productDTO){
-        if(productsRepository.existsByCode(productDTO.code())){
-            throw new RuntimeException("Product already exist.");
+    public ProductEntity register(ProductRegisterDTO productDTO) throws DuplicatedRegistrationException{
+        if(productsRepository.existsByCode(productDTO.code())) {
+            throw new DuplicatedRegistrationException ("Product already exist.");
         }
 
+        //TODO: make the fk_user_uuid be defined by the id stored in the token
         ProductEntity product = new ProductEntity(productDTO);
         return productsRepository.save(product);
 
@@ -44,11 +47,11 @@ public class ProductsService {
         return productsRepository.findByCode(code);
     }
     // TODO: update return type and deletion
-    public ProductEntity update(String productCode, ProductUpdateDTO updatedProduct){
+    public ProductEntity update(String productCode, ProductUpdateDTO updatedProduct) throws ProductNotFoundException {
         ProductEntity product = productsRepository.findByCode(productCode);
 
         if (product == null){
-            throw new RuntimeException("Product not found.");
+            throw new ProductNotFoundException("Product not found.");
         }
 
         product.setName(updatedProduct.name());
