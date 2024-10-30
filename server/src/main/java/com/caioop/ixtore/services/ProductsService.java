@@ -43,8 +43,14 @@ public class ProductsService {
     public List<ProductEntity> getProductsByUserId(UUID userId){
         return productsRepository.findProdutctsByUserUUID(userId);
     }
-    public ProductEntity getByCode(String code){
-        return productsRepository.findByCode(code);
+    public ProductEntity getByCode(String code) throws ProductNotFoundException{
+
+        ProductEntity product = productsRepository.findByCode(code);
+
+        if (product == null){
+            throw new ProductNotFoundException("Product not found.");
+        }
+        return product;
     }
     // TODO: update return type and deletion
     public ProductEntity update(String productCode, ProductUpdateDTO updatedProduct) throws ProductNotFoundException {
@@ -53,7 +59,7 @@ public class ProductsService {
         if (product == null){
             throw new ProductNotFoundException("Product not found.");
         }
-
+        // TODO: ProductUpdateDTO to Product Entity "Constructor"
         product.setName(updatedProduct.name());
         product.setPrice(updatedProduct.price());
         product.setDescription(updatedProduct.description());
@@ -63,12 +69,12 @@ public class ProductsService {
         productsRepository.save(product);
         return product;
     }
-    public void delete(String productCode){
+    public void delete(String productCode) throws ProductNotFoundException{
         //TODO: check if the code exists, then delete where the code is equal
         ProductEntity product = productsRepository.findByCode(productCode);
 
         if (product == null){
-            throw new RuntimeException("Product not found.");
+            throw new ProductNotFoundException("Product not found.");
         }
 
         productsRepository.delete(product);

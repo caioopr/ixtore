@@ -38,7 +38,7 @@ public class ProductsController {
 
     @GetMapping("{code}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductEntity getProductsByCode(@PathVariable("code") String code){
+    public ProductEntity getProductsByCode(@PathVariable("code") String code) throws ProductNotFoundException{
         return productsService.getByCode(code);
     }
 
@@ -50,7 +50,7 @@ public class ProductsController {
 
     @DeleteMapping("{code}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProduct(@PathVariable("code") String code){
+    public void deleteProduct(@PathVariable("code") String code) throws ProductNotFoundException{
         productsService.delete(code);
     }
 }
