@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ApplicationControllerAdvice {
-
+    // TODO: a handler for each Security exception
+    // change all handlers return type to "ProblemDetail"
     @ExceptionHandler(Exception.class)
     public ProblemDetail handelSecurityException(Exception exception){
         ProblemDetail errorDetail = null;
