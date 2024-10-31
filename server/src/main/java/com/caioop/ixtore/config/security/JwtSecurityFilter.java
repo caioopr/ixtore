@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -39,14 +40,14 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
         //removes the "Bearer "
         final String token = this.recoverToken(request);
 
-        if (token == ""){
+        if (Objects.equals(token, "")){
             filterChain.doFilter(request, response);
             return;
         }
 
         String userEmail = jwtService.validateToken(token);
 
-        if(userEmail != "" && SecurityContextHolder.getContext().getAuthentication() == null){
+        if(!Objects.equals(userEmail, "") && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails user = this.authorizationService.loadUserByUsername(userEmail);
             if (user.getUsername().equals(userEmail)){
                 System.out.println(user.getUsername());
@@ -70,6 +71,6 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
         if(authHeader == null || !authHeader.startsWith("Bearer ")){
             return null;
         }
-        return authHeader.replace("Bearer ", "");
+        return authHeader.replace("Bearer ", "").trim();
     }
 }

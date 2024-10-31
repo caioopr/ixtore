@@ -5,6 +5,7 @@ import com.caioop.ixtore.dtos.UserRegisterDTO;
 import com.caioop.ixtore.dtos.UserUpdateDTO;
 import com.caioop.ixtore.entities.UserEntity;
 import com.caioop.ixtore.entities.UserRole;
+import com.caioop.ixtore.exceptions.DuplicatedRegistrationException;
 import com.caioop.ixtore.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,10 +24,10 @@ public class UsersService {
         this.usersRepository = usersRepository;
     }
 
-    public void register(UserRegisterDTO userDTO){
+    public void register(UserRegisterDTO userDTO) throws DuplicatedRegistrationException{
 
         if(usersRepository.existsByEmail(userDTO.email())){
-            throw new RuntimeException("User already exist");
+            throw new DuplicatedRegistrationException("User already exist");
         }
 
         UserRole userRole = userDTO.role();

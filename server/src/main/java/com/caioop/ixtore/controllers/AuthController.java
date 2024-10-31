@@ -7,6 +7,7 @@ import com.caioop.ixtore.dtos.UserDTO;
 import com.caioop.ixtore.dtos.UserRegisterDTO;
 import com.caioop.ixtore.entities.UserEntity;
 import com.caioop.ixtore.entities.UserRole;
+import com.caioop.ixtore.exceptions.DuplicatedRegistrationException;
 import com.caioop.ixtore.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,9 +34,12 @@ public class AuthController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public LoginResponseDTO login(@RequestBody AuthenticationDTO data){
-        System.out.println(data.toString());
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
+
+        if(!auth.isAuthenticated()){
+            throw new RuntimeException("Invalid user request");
+        }
 
         UserEntity user = (UserEntity) auth.getPrincipal();
         Map<String, Object> extraClaims = new HashMap<>();
@@ -55,7 +59,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.OK)
-    public void register(@RequestBody UserRegisterDTO data){
+    public void register(@RequestBody UserRegisterDTO data) throws DuplicatedRegistrationException {
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
 
