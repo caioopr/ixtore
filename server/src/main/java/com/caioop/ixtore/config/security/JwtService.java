@@ -3,11 +3,13 @@ package com.caioop.ixtore.config.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.security.SignatureException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -37,17 +39,18 @@ public class JwtService {
     }
 
 
-    public String validateToken(String token){
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.require(algorithm)
-                    .withIssuer("ixtore-api")
-                    .build()
-                    .verify(token)
-                    .getSubject();
-        } catch (JWTVerificationException exception){
-            return "";
-        }
+    // FIX Exception
+    public String validateToken(String token) throws JWTVerificationException{
+            try {
+                Algorithm algorithm = Algorithm.HMAC256(secret);
+                return JWT.require(algorithm)
+                        .withIssuer("ixtore-api")
+                        .build()
+                        .verify(token)
+                        .getSubject();
+            }catch(Exception e){
+                throw new JWTVerificationException("Invalid  or Expired Token!", e);
+            }
     }
 
     public String extractClaim(String token, String issuer,String claimName){
