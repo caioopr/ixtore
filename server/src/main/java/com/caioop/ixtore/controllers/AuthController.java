@@ -12,6 +12,7 @@ import com.caioop.ixtore.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class AuthController {
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
         if(!auth.isAuthenticated()){
-            throw new RuntimeException("Invalid user request");
+            throw new BadCredentialsException("Invalid Credentials");
         }
 
         UserEntity user = (UserEntity) auth.getPrincipal();

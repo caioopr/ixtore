@@ -21,47 +21,93 @@ public class ApplicationControllerAdvice {
 
     @ExceptionHandler(ProductNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiErrors handleProductNotFoundException(ProductNotFoundException exception){
-        return new ApiErrors(exception.getMessage());
+    public ProblemDetail handleProductNotFoundException(ProductNotFoundException exception) {
+
+        ProblemDetail errorDetail = null;
+        errorDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatusCode.valueOf(404),
+                exception.getMessage()
+        );
+        errorDetail.setProperty("reason", "Product key not found");
+
+        return errorDetail;
     }
 
     @ExceptionHandler(DuplicatedRegistrationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrors handleDuplicatedRegistrationException(DuplicatedRegistrationException exception){
-        return new ApiErrors(exception.getMessage());
+    public ProblemDetail handleDuplicatedRegistrationException(DuplicatedRegistrationException exception) {
+
+        ProblemDetail errorDetail = null;
+        errorDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatusCode.valueOf(400),
+                exception.getMessage()
+        );
+        errorDetail.setProperty("reason", "Duplicated Keys");
+
+        return errorDetail;
     }
 
-    // TODO: a handler for each Security exception
-    // change all handlers return type to "ProblemDetail"
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ProblemDetail handleUsernameNotFoundException(UsernameNotFoundException exception) {
+        ProblemDetail errorDetail = null;
+        errorDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatusCode.valueOf(401),
+                exception.getMessage()
+        );
+        errorDetail.setProperty("reason", "Authorization Failure");
+
+        return errorDetail;
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ProblemDetail handleBadCredentialsException(BadCredentialsException exception) {
+        ProblemDetail errorDetail = null;
+        errorDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatusCode.valueOf(401),
+                exception.getMessage()
+        );
+        errorDetail.setProperty("reason", "Authorization Failure");
+
+        return errorDetail;
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ProblemDetail handleAccessDeniedException(AccessDeniedException exception) {
+        ProblemDetail errorDetail = null;
+        errorDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatusCode.valueOf(403),
+                exception.getMessage()
+        );
+        errorDetail.setProperty("reason", "Authorization Failure");
+
+        return errorDetail;
+    }
+
+    @ExceptionHandler(JWTVerificationException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ProblemDetail handleJWTVerificationException(JWTVerificationException exception) {
+        ProblemDetail errorDetail = null;
+        errorDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatusCode.valueOf(403),
+                exception.getMessage()
+        );
+        errorDetail.setProperty("reason", "Authorization Failure");
+
+        return errorDetail;
+    }
+
     @ExceptionHandler(Exception.class)
-    public ProblemDetail handelSecurityException(Exception exception){
+    public ProblemDetail handelSecurityException(Exception exception) {
         ProblemDetail errorDetail = null;
 
-        if(exception instanceof UsernameNotFoundException){
-            errorDetail = ProblemDetail.forStatusAndDetail(
-                    HttpStatusCode.valueOf(403), exception.getMessage()
-            );
-            errorDetail.setProperty("reason", "Authorization Failure");
-        }
-        if(exception instanceof BadCredentialsException){
-            errorDetail = ProblemDetail.forStatusAndDetail(
-                    HttpStatusCode.valueOf(401), exception.getMessage()
-            );
-            errorDetail.setProperty("reason", "Authentication Failure");
-        }
-        if(exception instanceof AccessDeniedException){
-            errorDetail = ProblemDetail.forStatusAndDetail(
-                    HttpStatusCode.valueOf(403), exception.getMessage()
-            );
-            errorDetail.setProperty("reason", "Authorization Failure");
-        }
 
-        if(exception instanceof JWTVerificationException){
-            errorDetail = ProblemDetail.forStatusAndDetail(
-                    HttpStatusCode.valueOf(403), exception.getMessage()
-            );
-            errorDetail.setProperty("reason", "JWT Token Invalid or Expired");
-        }
+        errorDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatusCode.valueOf(500), exception.getMessage()
+        );
+        errorDetail.setProperty("reason", "Server ERROR.");
 
         return errorDetail;
     }
