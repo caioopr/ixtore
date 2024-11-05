@@ -36,6 +36,7 @@ export const useAuthStore = defineStore('auth', {
         throw error;
       }
 
+      // const {userInfo, token}: {userInfo:{...}, token: String} = responseData;
       const { userInfo, token } = responseData;
 
       this.user.id = userInfo.user_uuid;
