@@ -3,11 +3,13 @@ package com.caioop.ixtore.controllers;
 import com.caioop.ixtore.dtos.ProductRegisterDTO;
 import com.caioop.ixtore.dtos.ProductUpdateDTO;
 import com.caioop.ixtore.entities.ProductEntity;
+import com.caioop.ixtore.entities.UserEntity;
 import com.caioop.ixtore.exceptions.DuplicatedRegistrationException;
 import com.caioop.ixtore.exceptions.ProductNotFoundException;
 import com.caioop.ixtore.services.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +28,9 @@ public class ProductsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductEntity register(@RequestBody ProductRegisterDTO product ) throws DuplicatedRegistrationException {
-        return productsService.register(product);
+    public ProductEntity register(@RequestBody ProductRegisterDTO product,Authentication currentUser) throws DuplicatedRegistrationException {
+        UserEntity currentUserPrincipal = (UserEntity) currentUser.getPrincipal();
+        return productsService.register(product,currentUserPrincipal.getUser_uuid());
     }
 
     @GetMapping
@@ -38,19 +41,23 @@ public class ProductsController {
 
     @GetMapping("{code}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductEntity getProductsByCode(@PathVariable("code") String code) throws ProductNotFoundException{
-        return productsService.getByCode(code);
+    public ProductEntity getProductsByCode(@PathVariable("code") String code, Authentication currentUser) throws ProductNotFoundException{
+        UserEntity currentUserPrincipal = (UserEntity) currentUser.getPrincipal();
+
+        return productsService.getByCode(code,currentUserPrincipal.getUser_uuid());
     }
 
     @PutMapping("{code}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductEntity updateProduct(@PathVariable("code") String code, @RequestBody ProductUpdateDTO product) throws ProductNotFoundException {
-        return productsService.update(code, product);
+    public ProductEntity updateProduct(@PathVariable("code") String code, @RequestBody ProductUpdateDTO product,Authentication currentUser) throws ProductNotFoundException {
+        UserEntity currentUserPrincipal = (UserEntity) currentUser.getPrincipal();
+        return productsService.update(code, product, currentUserPrincipal.getUser_uuid());
     }
 
     @DeleteMapping("{code}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProduct(@PathVariable("code") String code) throws ProductNotFoundException{
-        productsService.delete(code);
+    public void deleteProduct(@PathVariable("code") String code,Authentication currentUser) throws ProductNotFoundException{
+        UserEntity currentUserPrincipal = (UserEntity) currentUser.getPrincipal();
+        productsService.delete(code,currentUserPrincipal.getUser_uuid());
     }
 }

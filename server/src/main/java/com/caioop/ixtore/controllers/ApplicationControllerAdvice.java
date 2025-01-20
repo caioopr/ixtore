@@ -1,7 +1,6 @@
 package com.caioop.ixtore.controllers;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.caioop.ixtore.exceptions.DuplicatedRegistrationException;
 import com.caioop.ixtore.exceptions.ProductNotFoundException;
 import org.springframework.http.HttpStatus;

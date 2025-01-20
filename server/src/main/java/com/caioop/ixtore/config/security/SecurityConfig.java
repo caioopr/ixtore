@@ -68,6 +68,7 @@ public class SecurityConfig {
         return new GrantedAuthorityDefaults("");
     }
 
+    // TODO
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();

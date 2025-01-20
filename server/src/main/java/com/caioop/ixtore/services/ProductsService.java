@@ -7,10 +7,10 @@ import com.caioop.ixtore.exceptions.DuplicatedRegistrationException;
 import com.caioop.ixtore.exceptions.ProductNotFoundException;
 import com.caioop.ixtore.repositories.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 // TODO :
@@ -29,13 +29,14 @@ public class ProductsService {
         this.productsRepository = productsRepository;
     }
 
-    public ProductEntity register(ProductRegisterDTO productDTO) throws DuplicatedRegistrationException {
+    public ProductEntity register(ProductRegisterDTO productDTO,UUID userId) throws DuplicatedRegistrationException {
         if (productsRepository.existsByCode(productDTO.code())) {
             throw new DuplicatedRegistrationException("Product already exist.");
         }
 
         //TODO: make the fk_user_uuid be defined by the id stored in the token
         ProductEntity product = new ProductEntity(productDTO);
+        product.setFk_user_uuid(userId);
         return productsRepository.save(product);
 
 
@@ -45,20 +46,29 @@ public class ProductsService {
         return productsRepository.findProductsByUserUUID(userId);
     }
 
-    public ProductEntity getByCode(String code) throws ProductNotFoundException {
+
+    public ProductEntity getByCode(String code, UUID userId) throws ProductNotFoundException {
         // TODO: verify the user id requesting the product
         ProductEntity product = productsRepository
                 .findByCode(code)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found."));
 
+        if(!product.getFk_user_uuid().equals(userId)) {
+            throw new ProductNotFoundException("User's product not found.");
+        }
+
         return product;
     }
 
     // TODO: update return type and deletion
-    public ProductEntity update(String productCode, ProductUpdateDTO updatedProduct) throws ProductNotFoundException {
+    public ProductEntity update(String productCode, ProductUpdateDTO updatedProduct, UUID userId) throws ProductNotFoundException {
         ProductEntity product = productsRepository
                 .findByCode(productCode)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found."));
+
+        if(!product.getFk_user_uuid().equals(userId)) {
+            throw new ProductNotFoundException("User's product not found.");
+        }
 
         // TODO: ProductUpdateDTO to Product Entity "Constructor"
         product.setName(updatedProduct.name());
@@ -71,14 +81,17 @@ public class ProductsService {
         return product;
     }
 
-    public void delete(String productCode) throws ProductNotFoundException {
+    public void delete(String productCode, UUID userId) throws ProductNotFoundException {
 
         //TODO: check if the code exists, then delete where the code is equal
         ProductEntity product = productsRepository
                 .findByCode(productCode)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found."));
 
+        if(!product.getFk_user_uuid().equals(userId)) {
+            throw new ProductNotFoundException("User's product not found.");
+        }
+
         productsRepository.delete(product);
     }
-
 }
